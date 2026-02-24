@@ -10,4 +10,4 @@ Lista = list(Libros.find())
 #Se realiza una consulta a la colección "Libros" utilizando el método find(), que devuelve un cursor con todos los documentos de la colección. 
 #Luego, se convierte el cursor en una lista utilizando la función list(), lo que permite iterar sobre los documentos de la colección de manera más sencilla.
 for L in Lista:
-    print(L['title'])
+    print(L['title'],"-", L['author'])
