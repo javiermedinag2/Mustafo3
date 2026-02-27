@@ -1,4 +1,6 @@
 from pymongo import MongoClient #Librería de MongoDB para Python 
+from flask import Flask #Librería de Flask para crear aplicaciones web y renderizar plantillas HTML 
+app = Flask(__name__) #Creación de una instancia de la aplicación Flask  
 Cliente = MongoClient('mongodb://root:root@localhost:27017/') 
 #Conexión a la base de datos MongoDB utilizando el cliente de MongoDB. 
 #Se especifica la URL de conexión, que incluye el nombre de usuario, la contraseña y la dirección del servidor.
@@ -11,3 +13,11 @@ Lista = list(Libros.find())
 #Luego, se convierte el cursor en una lista utilizando la función list(), lo que permite iterar sobre los documentos de la colección de manera más sencilla.
 for L in Lista:
     print(L['title'],"-", L['author'])
+
+@app.route('/', methods=['GET'])
+def index():
+    return "Bienvenido a la Biblioteca", 200
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000) #Inicia la aplicación Flask en modo de depuración, lo que permite ver mensajes de error detallados en caso de que ocurra algún problema durante la ejecución de la aplicación.
+
