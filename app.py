@@ -29,7 +29,20 @@ def libros():
         for L in Lista:
             libros_list += f"<p>{L['title']} - {L['author']}</p>\n" #Itera sobre la lista de libros obtenida de la base de datos y construye una cadena HTML que muestra el título y el autor de cada libro en un formato de párrafo.  
         return libros_list, 200
+@app.route('/libros', methods=['POST']) #Endpoint de Flask que define una ruta para la URL "/libros" y especifica que se aceptan solicitudes POST.
+def agregar_libro():
+    data = request.get_json() #Obtiene los datos enviados en la solicitud POST en formato JSON y los almacena en la variable data.
+    if 'title' in data and 'author' in data: #Verifica si los campos "title" y "author" están presentes en los datos recibidos. Si es así, se ejecuta el bloque de código dentro del if.
+        nuevo_libro = {
+            "id":data["id"], #Asigna el valor del campo "id" de los datos recibidos al campo "id" del nuevo libro.
+            "title": data['title'], #Asigna el valor del campo "title" de los datos recibidos al campo "title" del nuevo libro.
+            "author": data['author'] #Asigna el valor del campo "author" de los datos recibidos al campo "author" del nuevo libro.
+        }
+        Libros.insert_one(nuevo_libro) #Inserta el nuevo libro en la colección "Libros" de la base de datos MongoDB utilizando el método insert_one().
+        return f"Libro '{nuevo_libro['title']}' agregado exitosamente", 201 #Devuelve un mensaje indicando que el libro fue agregado exitosamente, junto con un código de estado HTTP 201 (Created).
+    else:
+        return "Datos incompletos. Se requieren 'title' y 'author'.", 400 #Si los campos necesarios no están presentes en los datos recibidos, devuelve un mensaje indicando que los datos son incompletos y un código de estado HTTP 400 (Bad Request).
 
 if __name__ == '__main__': # Verifica si el script se está ejecutando directamente (en lugar de ser importado como un módulo) y, en ese caso, inicia la aplicación Flask.
-    app.run(debug=True, host='0.0.0.0', port=5000) #Inicia la aplicación Flask en modo de depuración, lo que permite ver mensajes de error detallados en caso de que ocurra algún problema durante la ejecución de la aplicación.
+    app.run(debug=True, host='0.0.0.0', port=80) #Inicia la aplicación Flask en modo de depuración, lo que permite ver mensajes de error detallados en caso de que ocurra algún problema durante la ejecución de la aplicación.
 
