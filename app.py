@@ -1,7 +1,7 @@
 from pymongo import MongoClient #Librería de MongoDB para Python 
 from flask import Flask, request #Librería de Flask para crear aplicaciones web y renderizar plantillas HTML 
 app = Flask(__name__) #Creación de una instancia de la aplicación Flask  
-Cliente = MongoClient('mongodb://root:root@localhost:27017/') 
+Cliente = MongoClient('mongodb://root:root@Mustafo_container:27017/') 
 #Conexión a la base de datos MongoDB utilizando el cliente de MongoDB. 
 #Se especifica la URL de conexión, que incluye el nombre de usuario, la contraseña y la dirección del servidor.
 db = Cliente.Biblioteca
@@ -44,5 +44,5 @@ def agregar_libro():
         return "Datos incompletos. Se requieren 'title' y 'author'.", 400 #Si los campos necesarios no están presentes en los datos recibidos, devuelve un mensaje indicando que los datos son incompletos y un código de estado HTTP 400 (Bad Request).
 
 if __name__ == '__main__': # Verifica si el script se está ejecutando directamente (en lugar de ser importado como un módulo) y, en ese caso, inicia la aplicación Flask.
-    app.run(debug=True, host='0.0.0.0', port=80) #Inicia la aplicación Flask en modo de depuración, lo que permite ver mensajes de error detallados en caso de que ocurra algún problema durante la ejecución de la aplicación.
+    app.run(debug=True, host='0.0.0.0', port=5000) #Inicia la aplicación Flask en modo de depuración, lo que permite ver mensajes de error detallados en caso de que ocurra algún problema durante la ejecución de la aplicación.
 
