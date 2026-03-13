@@ -1,7 +1,7 @@
 from pymongo import MongoClient #Librería de MongoDB para Python 
 from flask import Flask, request #Librería de Flask para crear aplicaciones web y renderizar plantillas HTML 
 app = Flask(__name__) #Creación de una instancia de la aplicación Flask  
-Cliente = MongoClient('mongodb://root:root@Mustafo_container:27017/') 
+Cliente = MongoClient('mongodb://root:root@mongodb:27017/') 
 #Conexión a la base de datos MongoDB utilizando el cliente de MongoDB. 
 #Se especifica la URL de conexión, que incluye el nombre de usuario, la contraseña y la dirección del servidor.
 db = Cliente.Biblioteca
