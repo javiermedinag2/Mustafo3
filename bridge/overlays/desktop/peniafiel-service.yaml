@@ -1,0 +1,9 @@
+#! peniafiel-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: peniafiel-published
+    namespace: mustafo3
+spec:
+    type: LoadBalancer

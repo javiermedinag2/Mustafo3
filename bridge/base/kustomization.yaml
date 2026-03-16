@@ -1,0 +1,15 @@
+#! kustomization.yaml
+# Generated code, do not edit
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - 0-mustafo3-namespace.yaml
+    - default-network-policy.yaml
+    - mongodb-C:\Users\Javier Medina\Desktop\Mustafo3\init-mongo.js-persistentVolumeClaim.yaml
+    - mongodb-deployment.yaml
+    - mongodb-expose.yaml
+    - mongodb-mongo_data-persistentVolumeClaim.yaml
+    - mongodb-service.yaml
+    - peniafiel-deployment.yaml
+    - peniafiel-expose.yaml
+    - peniafiel-service.yaml

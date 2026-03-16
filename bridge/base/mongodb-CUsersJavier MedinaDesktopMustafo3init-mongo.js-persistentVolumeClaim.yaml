@@ -1,0 +1,18 @@
+#! mongodb-C:\Users\Javier Medina\Desktop\Mustafo3\init-mongo.js-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: mongodb-c--users-javier-medina-desktop-mustafo3-init-mongo-js
+    namespace: mustafo3
+    labels:
+        com.docker.compose.service: mongodb
+        com.docker.compose.volume: C:\Users\Javier Medina\Desktop\Mustafo3\init-mongo.js
+spec:
+    accessModes:
+        # TODO would need to check which services use this volume
+        - ReadOnlyMany
+    volumeMode: Filesystem
+    resources:
+        requests:
+            storage: 100Mi

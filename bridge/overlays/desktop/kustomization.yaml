@@ -1,0 +1,11 @@
+#! kustomization.yaml
+# Generated code, do not edit
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - ../../base
+patches:
+    - path: mongodb-C:\Users\Javier Medina\Desktop\Mustafo3\init-mongo.js-persistentVolumeClaim.yaml
+    - path: mongodb-mongo_data-persistentVolumeClaim.yaml
+    - path: mongodb-service.yaml
+    - path: peniafiel-service.yaml
