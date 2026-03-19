@@ -1,9 +1,0 @@
-#! mongodb-C:\Users\Javier Medina\Desktop\Mustafo3\init-mongo.js-persistentVolumeClaim.yaml
-# Generated code, do not edit
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-    name: mongodb-c--users-javier-medina-desktop-mustafo3-init-mongo-js
-    namespace: mustafo3
-spec:
-    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

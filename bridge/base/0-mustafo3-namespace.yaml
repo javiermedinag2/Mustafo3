@@ -1,8 +1,0 @@
-#! 0-mustafo3-namespace.yaml
-# Generated code, do not edit
-apiVersion: v1
-kind: Namespace
-metadata:
-    name: mustafo3
-    labels:
-        com.docker.compose.project: mustafo3
