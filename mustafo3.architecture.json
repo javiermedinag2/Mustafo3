@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Arquitectura de Mustafo3 — Biblioteca",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "solicitud",
+        "label": "Consulta de libros",
+        "focus": ["clientes", "api-flask", "mongodb"],
+        "note": "Sigue la solicitud HTTP desde el cliente hasta la colección Libros."
+      },
+      {
+        "id": "despliegue",
+        "label": "Despliegue local",
+        "focus": ["api-flask", "mongodb"],
+        "note": "Docker Compose construye Flask y levanta MongoDB con almacenamiento persistente."
+      },
+      {
+        "id": "inicializacion",
+        "label": "Carga inicial",
+        "focus": ["script-inicializacion", "mongodb"],
+        "note": "El contenedor MongoDB ejecuta init-mongo.js durante la inicialización."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "clientes",
+      "type": "external",
+      "label": "Clientes HTTP",
+      "sublabel": "Navegador / API client",
+      "pos": [70, 260],
+      "size": [170, 76]
+    },
+    {
+      "id": "api-flask",
+      "type": "backend",
+      "label": "API Flask",
+      "sublabel": "Python · puerto 5000",
+      "tag": "GET / · GET/POST /libros",
+      "pos": [410, 260],
+      "size": [190, 84]
+    },
+    {
+      "id": "mongodb",
+      "type": "database",
+      "label": "MongoDB",
+      "sublabel": "Biblioteca · Libros",
+      "tag": "volumen mongo_data",
+      "pos": [810, 260],
+      "size": [200, 84]
+    },
+    {
+      "id": "script-inicializacion",
+      "type": "backend",
+      "label": "init-mongo.js",
+      "sublabel": "inserta datos iniciales",
+      "pos": [810, 420],
+      "size": [200, 76]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Docker Compose · despliegue local",
+      "wraps": ["api-flask", "mongodb", "script-inicializacion"],
+      "pad": 28
+    }
+  ],
+  "connections": [
+    {
+      "id": "cliente-api",
+      "from": "clientes",
+      "to": "api-flask",
+      "label": "HTTP · host 80 → contenedor 5000",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-mongodb",
+      "from": "api-flask",
+      "to": "mongodb",
+      "label": "PyMongo · mongodb:27017",
+      "variant": "emphasis"
+    },
+    {
+      "id": "seed-mongodb",
+      "from": "script-inicializacion",
+      "to": "mongodb",
+      "label": "insertMany · Libros",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Aplicación",
+      "items": [
+        "Flask expone bienvenida y operaciones de lectura y alta de libros.",
+        "PyMongo accede a Biblioteca.Libros.",
+        "El compose define MONGO_URI, pero app.py no la lee."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Ejecución local",
+      "items": [
+        "Compose construye la imagen Python e inicia Flask y MongoDB.",
+        "El puerto del host 80 se redirige al puerto 5000 del contenedor."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Datos",
+      "items": [
+        "mongo_data conserva los archivos de MongoDB.",
+        "init-mongo.js carga documentos al inicializar la base."
+      ]
+    }
+  ]
+}
