@@ -1,24 +1,50 @@
 services:
   peniafiel:
     build: .
+    container_name: peniafiel-app
     ports:
       - "80:5000"
     environment:
-      - MONGO_URI=mongodb://db:27017/Biblioteca
-    links:
-      - mongodb
+      - MONGO_URI=mongodb://app_user:${MONGO_PASSWORD}@mongodb:27017/Biblioteca?authSource=admin
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+    networks:
+      - biblioteca_net
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
   mongodb:
-    image: mongo:latest
+    image: mongo:7.0-alpine
+    container_name: mongodb-service
     ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - "127.0.0.1:27017:27017"
     environment:
       - MONGO_INITDB_DATABASE=Biblioteca
       - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_USERNAME=app_user
+      - MONGO_INITDB_PASSWORD=${MONGO_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - biblioteca_net
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
 volumes:
   mongo_data:
+    driver: local
+
+networks:
+  biblioteca_net:
+    driver: bridge

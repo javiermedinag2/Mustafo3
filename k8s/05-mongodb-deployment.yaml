@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:7.0-alpine
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        env:
+        - name: MONGO_INITDB_DATABASE
+          value: "Biblioteca"
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "root"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-credentials
+              key: MONGO_ROOT_PASSWORD
+        volumeMounts:
+        - name: mongodb-storage
+          mountPath: /data/db
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "echo 'db.runCommand(\"ping\").ok' | mongosh localhost/test --quiet"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "echo 'db.runCommand(\"ping\").ok' | mongosh localhost/test --quiet"
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: mongodb-storage
+        persistentVolumeClaim:
+          claimName: mongodb-pvc
+      - name: init-script
+        configMap:
+          name: mongodb-init-script
+      restartPolicy: Always

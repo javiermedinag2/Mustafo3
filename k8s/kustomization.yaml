@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: default
+
+resources:
+  - 00-namespace.yaml
+  - 01-secret.yaml
+  - 02-configmap.yaml
+  - 03-pvc.yaml
+  - 04-mongodb-service.yaml
+  - 05-mongodb-deployment.yaml
+  - 06-flask-service.yaml
+  - 07-flask-configmap.yaml
+  - 08-flask-deployment.yaml
+
+# Configurar valores comunes
+commonLabels:
+  app: peniafiel-biblioteca
+  environment: production
+
+commonAnnotations:
+  managed-by: kubernetes
+
+# Reemplazos de imagen (opcional)
+images:
+  - name: peniafiel
+    newName: your-registry/peniafiel
+    newTag: latest
+  - name: mongo
+    newName: mongo
+    newTag: "7.0-alpine"

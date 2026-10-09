@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-init-script
+  namespace: default
+data:
+  init-mongo.js: |
+    db.Libros.insertMany([
+    {
+      "id": 1,
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "genre": "Southern Gothic, Bildungsroman",
+      "description": "A novel about the serious issues of rape and racial inequality.",
+      "publishedYear": 1960,
+      "isbn": "978-0061120084"
+    },
+    {
+      "id": 2,
+      "title": "1984",
+      "author": "George Orwell",
+      "genre": "Dystopian, Science Fiction",
+      "description": "A dystopian social science fiction novel about totalitarianism.",
+      "publishedYear": 1949,
+      "isbn": "978-0451524935"
+    }
+    ]);
